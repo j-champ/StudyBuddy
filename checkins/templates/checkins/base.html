@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>StudyBuddy</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Calm custom theme -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="studybuddy">
+
+  <!-- Top nav -->
+  <nav class="bg-gradient-to-r from-teal-600 to-sky-600 text-white px-5 py-3 flex justify-between shadow">
+
+    <span class="font-bold">StudyBuddy</span>
+
+    {% if user.is_authenticated %}
+      <div class="flex items-center gap-4">
+        <span>{{ user.username }}</span>
+
+        <!-- Secure POST logout -->
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button class="underline hover:opacity-80">Logout</button>
+        </form>
+      </div>
+    {% endif %}
+
+  </nav>
+
+  <!-- Page body -->
+  <main class="p-6 max-w-3xl mx-auto fade">
+    {% block content %}{% endblock %}
+  </main>
+
+</body>

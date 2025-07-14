@@ -1,0 +1,16 @@
+{% extends 'checkins/base.html' %}
+{% block content %}
+<h2 class="text-lg font-semibold mb-4">Pair with a Study Buddy</h2>
+
+{% for msg in messages %}
+  <p class="mb-4 {% if msg.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %} p-3 rounded">
+    {{ msg }}
+  </p>
+{% endfor %}
+
+<form method="post" class="space-y-4 max-w-md">{% csrf_token %}
+  <input name="username" placeholder="Buddy's username"
+         class="w-full border p-2 rounded" required>
+  <button class="bg-teal-600 text-white px-4 py-2 rounded">Pair</button>
+</form>
+{% endblock %}

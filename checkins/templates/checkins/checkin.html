@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>StudyBuddy – Daily Check-In</title>
+</head>
+<body>
+  <h1>Hello, {{ request.user.username }} 👋</h1>
+  <h2>Check in for {{ today }}</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    <textarea name="note" placeholder="How was your study day?" rows="4" cols="50"></textarea><br><br>
+    <button type="submit">✅ Submit Check-In</button>
+  </form>
+
+  <hr>
+
+  <h2>📋 Your Past Check-Ins:</h2>
+  {% for c in checkins %}
+    <p><strong>{{ c.date }}</strong>: {{ c.note }}</p>
+  {% empty %}
+    <p>No check-ins yet. Start your consistency streak today! 💪</p>
+  {% endfor %}
+
+  <hr>
+  <a href="/accounts/logout/">🚪 Logout</a>
+</body>
+</html>

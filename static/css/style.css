@@ -1,0 +1,94 @@
+/* static/css/style.css */
+/* ----------------------------------------------------------
+   StudyBuddy custom theme
+   ---------------------------------------------------------- */
+
+/* 1. Global wrapper (wrap <body> in base.html) */
+.studybuddy {
+    --sb-teal: #14b8a6;
+    --sb-sky:  #0ea5e9;
+    --sb-rose: #f43f5e;
+    --sb-amber:#f59e0b;
+    --sb-bg1:  #f8fbff;
+    --sb-bg2:  #eef6ff;
+  
+    background: linear-gradient(180deg, var(--sb-bg1) 0%, var(--sb-bg2) 100%);
+    min-height: 100vh;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1e293b;
+  }
+  
+  /* 2. Card container */
+  .studybuddy .card {
+    background: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    padding: 2rem 2.5rem;
+  }
+  
+  /* 3. Buttons */
+  .studybuddy .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.6rem 1.1rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    background: var(--sb-teal);
+    color: #fff;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .studybuddy .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(20, 184, 166, 0.35);
+  }
+  .studybuddy .btn-rose   { background: var(--sb-rose); }
+  .studybuddy .btn-amber  { background: var(--sb-amber); }
+  .studybuddy .btn-sky    { background: var(--sb-sky);   }
+  
+  /* 4. Inputs */
+  .studybuddy input[type="text"],
+  .studybuddy input[type="email"],
+  .studybuddy input[type="password"],
+  .studybuddy input[type="date"],
+  .studybuddy input[type="number"] {
+    width: 100%;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.65rem;
+    background: #f9fafb;
+    transition: border 0.15s ease, box-shadow 0.15s ease;
+  }
+  .studybuddy input:focus {
+    outline: none;
+    border-color: var(--sb-sky);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25);
+  }
+  
+  /* 5. Fancy table rows */
+  .studybuddy table tr:nth-child(odd) {
+    background: #f9fafb;
+  }
+  .studybuddy table tr:hover {
+    background: #e0f2fe;
+  }
+  
+  /* 6. Points badge colours */
+  .studybuddy .points-positive {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  .studybuddy .points-negative {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  
+  /* 7. Subtle fade‑in animation */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .studybuddy .fade {
+    animation: fadeInUp 0.35s ease both;
+  }
+  

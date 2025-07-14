@@ -1,0 +1,92 @@
+{% extends 'checkins/base.html' %}
+{% block content %}
+
+<h2 class="text-lg font-semibold mb-4">Task: {{ task.title }}</h2>
+
+<!-- Timer display -->
+<div id="timer" class="text-5xl font-bold mb-6">25:00</div>
+
+<!-- Control buttons -->
+<div class="space-x-4">
+    <button id="startBtn"  class="bg-teal-600 text-white px-5 py-2 rounded-full shadow-md hover:shadow-lg transition">Start</button>
+    <button id="stopBtn"   class="bg-red-600  text-white px-5 py-2 rounded-full shadow-md hover:shadow-lg transition hidden">Stop</button>
+    <button id="resetBtn"  class="bg-gray-500 text-white px-5 py-2 rounded-full shadow-md hover:shadow-lg transition hidden">Restart</button>
+</div>
+
+<!-- Hidden form used to POST when a session finishes -->
+<form id="doneForm" method="post" class="hidden">{% csrf_token %}</form>
+
+<script>
+/* ------------ CONFIG ------------ */
+const TOTAL_SECS = 25*60;   // 25‑minute Pomodoro
+// For quick testing set to 5 (seconds).
+/* -------------------------------- */
+
+let left     = TOTAL_SECS;
+let running  = false;
+let timerId  = null;
+
+const timerEl  = document.getElementById('timer');
+const startBtn = document.getElementById('startBtn');
+const stopBtn  = document.getElementById('stopBtn');
+const resetBtn = document.getElementById('resetBtn');
+const form     = document.getElementById('doneForm');
+
+/* ---- render the mm:ss text ---- */
+function render () {
+  const m = String(Math.floor(left / 60)).padStart(2,'0');
+  const s = String(left % 60).padStart(2,'0');
+  timerEl.textContent = `${m}:${s}`;
+}
+
+/* ---- toggle visibility of Start / Stop ---- */
+function toggleButtons () {
+  startBtn.classList.toggle('hidden');
+  stopBtn.classList.toggle('hidden');
+  resetBtn.classList.remove('hidden');     // reset stays visible after first start
+}
+
+/* ---- start countdown ---- */
+function startTimer () {
+  if (running) return;
+  running = true;
+  toggleButtons();
+
+  timerId = setInterval(() => {
+    if (--left < 0) {
+      stopTimer(false);     // stop without toggling back to 'Start'
+      form.submit();        // POST to backend -> record Pomodoro
+      return;
+    }
+    render();
+  }, 1000);
+}
+
+/* ---- stop / pause ---- */
+function stopTimer (showStart = true) {
+  if (!running) return;
+  clearInterval(timerId);
+  running = false;
+  timerId = null;
+  if (showStart) toggleButtons();
+}
+
+/* ---- restart to full 25:00 ---- */
+function resetTimer () {
+  stopTimer(false);   // ensure interval cleared
+  left = TOTAL_SECS;
+  render();
+  startBtn.classList.remove('hidden');
+  stopBtn.classList.add('hidden');
+}
+
+/* ---- wire up clicks ---- */
+startBtn.onclick = startTimer;
+stopBtn.onclick  = () => stopTimer(true);
+resetBtn.onclick = resetTimer;
+
+/* initial display */
+render();
+</script>
+
+{% endblock %}

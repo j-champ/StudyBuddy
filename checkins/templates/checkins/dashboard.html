@@ -1,0 +1,82 @@
+{% extends 'checkins/base.html' %}
+{% block content %}
+
+<!-- Feedback messages (buddy pairing, etc.) -->
+{% if messages %}
+  {% for msg in messages %}
+    <p class="mb-4 {% if msg.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %} p-3 rounded">
+      {{ msg }}
+    </p>
+  {% endfor %}
+{% endif %}
+
+<!-- Buddy status -->
+{% if buddy_user %}
+<p class="mb-4">
+    <span class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 px-4 py-1 rounded-full text-sm">
+      👯‍♀️ <span class="font-medium">Your buddy:</span> {{ buddy_user.username }}
+    </span>
+  </p>
+<p class="mb-4">
+    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm
+                 {% if net_points >= 0 %}
+                   bg-amber-100 text-amber-800
+                 {% else %}
+                   bg-rose-100 text-rose-700
+                 {% endif %}">
+      💰 Points: <strong>{{ net_points }}</strong>
+    </span>
+  </p>
+{% else %}
+  <p class="mb-4">
+    You don’t have a study buddy yet.
+    <a href="{% url 'invite_buddy' %}" class="underline text-blue-600">Invite one</a>
+  </p>
+{% endif %}
+
+<!-- Task heading + add‑button -->
+<h2 class="text-xl font-semibold mb-4">Your Tasks</h2>
+
+<a href="{% url 'add_task' %}"
+   class="inline-block bg-teal-600 text-white px-3 py-1 rounded shadow hover:shadow-lg transition">
+  ➕ Add Task
+</a>
+
+<!-- Task table -->
+<table class="mt-4 w-full bg-white shadow rounded">
+  <thead class="bg-gray-100 font-semibold text-left">
+    <tr>
+      <th class="p-2">Title</th>
+      <th class="text-center">Goal</th>
+      <th class="text-center">Done</th>
+      <th class="text-center">Deadline</th>
+      <th class="text-center">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  {% for t in tasks %}
+  <tr class="border-t odd:bg-gray-50 hover:bg-sky-50 {% if t.completed %}bg-green-50{% endif %}">
+      <td class="p-2">{{ t.title }}</td>
+      <td class="text-center">{{ t.pomodoro_goal }}</td>
+      <td class="text-center">{{ t.pomodoro_done }}</td>
+      <td class="text-center">{{ t.deadline }}</td>
+      <td class="text-center">
+        {% if not t.completed %}
+          <a href="{% url 'start_pomodoro' t.id %}"
+             class="text-blue-600 underline">Start</a>
+          |
+          <a href="{% url 'complete_task' t.id %}"
+             class="text-green-600 underline">Mark Done</a>
+        {% else %}
+          ✅
+        {% endif %}
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5" class="p-3">No tasks yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

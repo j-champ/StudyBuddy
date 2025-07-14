@@ -1,0 +1,21 @@
+{% extends 'checkins/base.html' %}
+{% block content %}
+<h2 class="text-lg font-semibold mb-4">Add Task</h2>
+<form method="post" class="space-y-4 max-w-md">{% csrf_token %}
+  <input name="title" placeholder="Task title"
+         class="w-full border p-2 rounded">
+
+  <!-- User chooses number of Pomodoros -->
+  <label class="block font-medium">Pomodoro goal
+    <input name="goal" type="number" min="1" value="1"
+           class="w-full border p-2 rounded">
+  </label>
+
+  <label class="block font-medium">Deadline
+    <input name="deadline" type="date"
+           class="w-full border p-2 rounded">
+  </label>
+
+  <button class="bg-teal-600 text-white px-4 py-2 rounded">Save</button>
+</form>
+{% endblock %}
